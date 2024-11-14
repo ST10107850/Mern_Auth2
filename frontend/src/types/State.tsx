@@ -6,7 +6,6 @@ export interface AuthState {
     surname: string;
     email: string;
   } | null;
-  token: string | null;
 }
 
 export interface RootState {

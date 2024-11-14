@@ -12,9 +12,9 @@ export const Login = () => {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null); // To hold the error message
   const [isLoading, setIsLoading] = useState<boolean>(false); // State to control spinner
-  const [loadingTimeout, setLoadingTimeout] = useState<NodeJS.Timeout | null>(
-    null
-  ); // To manage the timeout
+//  const [loadingTimeout, setLoadingTimeout] = useState<NodeJS.Timeout | null>(
+//     null
+//   ); // To manage the  timeout
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -34,11 +34,7 @@ export const Login = () => {
 
     setIsLoading(true); // Start loading spinner
 
-    // Set a 3-second timeout to simulate a loading state
-    const timeout = setTimeout(() => {
-      setIsLoading(false); // Hide the spinner after 3 seconds
-    }, 7000);
-    setLoadingTimeout(timeout);
+    
 
     try {
       setError(null); // Reset error before submitting
@@ -53,9 +49,7 @@ export const Login = () => {
       toast.error(err?.data?.message || err.error || "An error occurred");
     } finally {
       // Cleanup and stop loading spinner after 3 seconds
-      if (loadingTimeout) {
-        clearTimeout(loadingTimeout); // Clear timeout if request completes before 3 seconds
-      }
+    
       setIsLoading(false);
     }
   };
