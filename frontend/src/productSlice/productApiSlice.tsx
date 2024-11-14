@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { Product } from "../types/State";
 
 const PRODUCT_URL = "/api/products"; // Replace with your actual endpoint
 
@@ -10,10 +11,9 @@ export const productSlice = createApi({
   baseQuery: productBaseQuery,
   tagTypes: ["Product"],
   endpoints: (builder) => ({
-    getAllProduct: builder.query({
-      query: () => PRODUCT_URL,
-      providesTags: ["Product"],
-    }),
+    getAllProduct: builder.query<Product[], void>({
+      query: () => 'products',
+    }),    
     createProduct: builder.mutation({
       query: (data) => ({
         url: PRODUCT_URL,

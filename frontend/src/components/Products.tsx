@@ -1,4 +1,3 @@
-import React from "react";
 import { useGetAllProductQuery } from "../productSlice/productApiSlice";
 import { Link } from "react-router-dom";
 
@@ -20,7 +19,13 @@ export const Products = () => {
 
   if (error) {
     console.error("Error loading products:", error);
-    return <div>Error loading products: {error.message}</div>;
+    // Check for error types and handle the message accordingly
+    const errorMessage =
+      "message" in error
+        ? (error as { message: string }).message // If it's a SerializedError
+        : "An unknown error occurred."; // Fallback for other error types
+
+    return <div>Error loading products: {errorMessage}</div>;
   }
 
   console.log(products);

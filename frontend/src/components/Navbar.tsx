@@ -8,7 +8,8 @@ import { useLogoutMutation } from "../slices/usersApiSlice";
 import { logout } from "../slices/authSlice";
 
 export const Navbar = () => {
-  const { userInfo } = useSelector((state: RootState) => state.auth); // useSelector should be lowercase
+  const { userInfo, token } = useSelector((state: RootState) => state.auth);
+
 
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
@@ -21,8 +22,8 @@ export const Navbar = () => {
 
   const logoutHandler = async () => {
     try {
-      // If the mutation requires arguments, pass them
-      await logoutApiCall().unwrap(); // Replace with necessary data
+      // Pass required data (e.g., userInfo or token)
+      await logoutApiCall(token).unwrap(); // Provide necessary data
 
       // Dispatch logout action and navigate
       dispatch(logout());
