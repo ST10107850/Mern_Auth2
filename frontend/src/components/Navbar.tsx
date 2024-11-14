@@ -1,37 +1,39 @@
 import { CgProfile } from "react-icons/cg";
-import { NavLink, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux"; // Fix the import here
+import { NavLink } from "react-router-dom";
+import {  useSelector } from "react-redux"; // Fix the import here
 import { MdArrowDropDown } from "react-icons/md";
 import { useState } from "react";
 import { RootState } from "../types/State";
-import { useLogoutMutation } from "../slices/usersApiSlice";
-import { logout } from "../slices/authSlice";
+// import { useLogoutMutation } from "../slices/usersApiSlice";
+// import { logout } from "../slices/authSlice";
 
 export const Navbar = () => {
-  const { userInfo, token } = useSelector((state: RootState) => state.auth);
+  const { userInfo } = useSelector((state: RootState) => state.auth);
+// const token = useSelector((state: RootState) => state.auth.token); // if token is separate
+
 
 
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleDropdown = () => setDropdownOpen((prev) => !prev);
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const dispatch = useDispatch();
+  // const navigate = useNavigate();
 
-  const [logoutApiCall] = useLogoutMutation();
+  // const [logoutApiCall] = useLogoutMutation();
 
-  const logoutHandler = async () => {
-    try {
-      // Pass required data (e.g., userInfo or token)
-      await logoutApiCall(token).unwrap(); // Provide necessary data
+  // const logoutHandler = async () => {
+  //   try {
+  //     // Pass required data (e.g., userInfo or token)
+  //     await logoutApiCall(token).unwrap(); // Provide necessary data
 
-      // Dispatch logout action and navigate
-      dispatch(logout());
-      navigate("/");
-    } catch (error: any) {
-      console.log("Error", error.message);
-    }
-  };
+  //     // Dispatch logout action and navigate
+  //     dispatch(logout());
+  //     navigate("/");
+  //   } catch (error: any) {
+  //     console.log("Error", error.message);
+  //   }
+  // };
 
   return (
     <div className="w-full px-5 md:px-10 py-4 flex justify-between bg-[#F1E6DB] z-10">
@@ -70,7 +72,7 @@ export const Navbar = () => {
                 </NavLink>
                 <NavLink
                   to="/"
-                  onClick={logoutHandler}
+                  // onClick={logoutHandler}
                   className="block py-2 px-4 hover:bg-gray-100 text-sm"
                 >
                   Log Out
