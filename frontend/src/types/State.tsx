@@ -22,4 +22,3 @@ export interface Product {
   productImage: string;
   productColor: string;
 }
-

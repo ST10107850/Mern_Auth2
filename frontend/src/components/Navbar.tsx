@@ -1,39 +1,35 @@
 import { CgProfile } from "react-icons/cg";
-import { NavLink } from "react-router-dom";
-import {  useSelector } from "react-redux"; // Fix the import here
+import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux"; // Fix the import here
 import { MdArrowDropDown } from "react-icons/md";
 import { useState } from "react";
 import { RootState } from "../types/State";
-// import { useLogoutMutation } from "../slices/usersApiSlice";
-// import { logout } from "../slices/authSlice";
+import { useLogoutMutation } from "../slices/usersApiSlice";
+import { logout } from "../slices/authSlice";
 
 export const Navbar = () => {
-  const { userInfo } = useSelector((state: RootState) => state.auth);
-// const token = useSelector((state: RootState) => state.auth.token); // if token is separate
-
-
+  const { userInfo } = useSelector((state: RootState) => state.auth); // useSelector should be lowercase
 
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleDropdown = () => setDropdownOpen((prev) => !prev);
 
-  // const dispatch = useDispatch();
-  // const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  // const [logoutApiCall] = useLogoutMutation();
+  const [logoutApiCall] = useLogoutMutation();
 
-  // const logoutHandler = async () => {
-  //   try {
-  //     // Pass required data (e.g., userInfo or token)
-  //     await logoutApiCall(token).unwrap(); // Provide necessary data
+  const logoutHandler = async () => {
+    try {
+      
+      await logoutApiCall().unwrap(); 
 
-  //     // Dispatch logout action and navigate
-  //     dispatch(logout());
-  //     navigate("/");
-  //   } catch (error: any) {
-  //     console.log("Error", error.message);
-  //   }
-  // };
+      dispatch(logout());
+      navigate("/");
+    } catch (error: any) {
+      console.log("Error", error.message);
+    }
+  };
 
   return (
     <div className="w-full px-5 md:px-10 py-4 flex justify-between bg-[#F1E6DB] z-10">
@@ -49,19 +45,18 @@ export const Navbar = () => {
       <div className="flex items-center space-x-4 md:space-x-5 font-light text-sm md:text-lg">
         {userInfo ? (
           <div className="flex items-center space-x-2 text-tertiaryColor">
-            {/* Profile name with dropdown */}
             <NavLink
               to="#"
               className="pr-4 md:pr-10 flex items-center space-x-2 cursor-pointer"
-              onClick={toggleDropdown} // Toggle dropdown visibility on click
+              onClick={toggleDropdown} 
             >
               <span>
                 {userInfo.name} {userInfo.surname}
               </span>
-              <MdArrowDropDown size={24} /> {/* Dropdown icon */}
+              <MdArrowDropDown size={24} /> 
             </NavLink>
 
-            {/* Dropdown options */}
+           
             {isDropdownOpen && (
               <div className="absolute bg-white shadow-lg rounded-lg mt-2 py-2 px-4">
                 <NavLink
@@ -72,7 +67,7 @@ export const Navbar = () => {
                 </NavLink>
                 <NavLink
                   to="/"
-                  // onClick={logoutHandler}
+                  onClick={logoutHandler}
                   className="block py-2 px-4 hover:bg-gray-100 text-sm"
                 >
                   Log Out

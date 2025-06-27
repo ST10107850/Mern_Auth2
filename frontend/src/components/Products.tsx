@@ -1,4 +1,4 @@
-import { useGetAllProductQuery } from "../productSlice/productApiSlice";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 interface Product {
@@ -11,24 +11,36 @@ interface Product {
 }
 
 export const Products = () => {
-  const { data: products, error, isLoading } = useGetAllProductQuery();
+  const [products, setProducts] = useState<Product[] | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("/api/products"); // Replace with your API endpoint
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data: Product[] = await response.json();
+        setProducts(data);
+      } catch (err: any) {
+        setError(err.message || "An error occurred while fetching products.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
   if (error) {
-    console.error("Error loading products:", error);
-    // Check for error types and handle the message accordingly
-    const errorMessage =
-      "message" in error
-        ? (error as { message: string }).message // If it's a SerializedError
-        : "An unknown error occurred."; // Fallback for other error types
-
-    return <div>Error loading products: {errorMessage}</div>;
+    return <div>Error loading products: {error}</div>;
   }
-
-  console.log(products);
 
   return (
     <div className="flex flex-col justify-center items-center py-7">
@@ -37,7 +49,7 @@ export const Products = () => {
       </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-        {products?.map((item: Product) => (
+        {products?.map((item) => (
           <Link
             to={`/product/${item._id}`}
             key={item._id}
@@ -53,11 +65,6 @@ export const Products = () => {
             <h3 className="text-xl font-semibold mb-2 text-orange-500">
               {item.productName}
             </h3>
-            {/* <p className="text-gray-500">
-              {item.productDescription.length > 200
-                ? `${item.productDescription.slice(0, 200)}...`
-                : item.productDescription}
-            </p> */}
             <p className="text-orange-300 font-bold mt-2">
               Price: R{item.productPrice}
             </p>

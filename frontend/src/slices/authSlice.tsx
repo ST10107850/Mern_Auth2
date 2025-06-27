@@ -9,18 +9,18 @@ const initialState: AuthState = {
 };
 
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   reducers: {
-    setCredentials: (state, action: PayloadAction<AuthState["userInfo"]>) => {
+    setCredentials: (state, action: PayloadAction<AuthState['userInfo']>) => {
       state.userInfo = action.payload;
       state.isAuthenticated = true;
-      localStorage.setItem("userInfo", JSON.stringify(action.payload));
+      localStorage.setItem('userInfo', JSON.stringify(action.payload));
     },
     logout: (state) => {
       state.userInfo = null;
       state.isAuthenticated = false;
-      localStorage.removeItem("userInfo");
+      localStorage.removeItem('userInfo');
     },
   },
 });
